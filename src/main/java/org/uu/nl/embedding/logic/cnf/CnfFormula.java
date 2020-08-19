@@ -157,7 +157,7 @@ public class CnfFormula implements CnfLogicRule {
     			}
     			counter++; 
     		}
-    		newClause = new Clause(literals.toArray(new LogicLiteral[0]), ArrayUtils.toArray(orderedNegated));
+    		newClause = new Clause(literals.toArray(new LogicLiteral[0]), ArrayUtils.toArray(orderedNegated, true));
     		addClause(newClause); 
     	}
     	

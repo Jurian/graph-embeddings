@@ -5,6 +5,14 @@ import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import info.debatty.java.stringsimilarity.interfaces.StringSimilarity;
 import me.tongfei.progressbar.ProgressBar;
 import me.tongfei.progressbar.ProgressBarStyle;
+
+import org.uu.nl.embedding.bca.jobs.ContextWinnowedUndirectedWeighted;
+import org.uu.nl.embedding.bca.jobs.DirectedWeighted;
+import org.uu.nl.embedding.bca.jobs.HybridWeighted;
+import org.uu.nl.embedding.bca.jobs.KaleUndirectedWeighted;
+import org.uu.nl.embedding.bca.jobs.KaleUndirectedWeightedNodeBased;
+import org.uu.nl.embedding.bca.jobs.KaleUndirectedWeightedSeperated;
+import org.uu.nl.embedding.bca.jobs.UndirectedWeighted;
 import org.uu.nl.embedding.util.rnd.ExtendedRandom;
 import org.uu.nl.embedding.util.rnd.ThreadLocalSeededRandom;
 import org.uu.nl.embedding.util.similarity.*;
@@ -33,7 +41,7 @@ public class Configuration {
     }
 
     public enum BCAType {
-        DIRECTED, UNDIRECTED, HYBRID
+        DIRECTED, UNDIRECTED, HYBRID, KALEUNDIRECTED, KALESEPERATED, KALENODEBASED, CONTEXTWINNOWED
     }
 
     private String graph;
@@ -181,6 +189,26 @@ public class Configuration {
                 1,
                 false
         );
+    }
+    
+    /**
+     * 
+     * @return
+     * @author Euan Westenbroek
+     */
+    public boolean isKale() {
+
+		switch (this.getBca().getTypeEnum()) {
+			case KALEUNDIRECTED:
+				return true;
+			case KALESEPERATED:
+				return true;
+			case KALENODEBASED:
+				return true;
+				
+			default:
+				return false;
+		}
     }
 
     public static class SimilarityGroup {

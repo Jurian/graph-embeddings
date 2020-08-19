@@ -61,7 +61,12 @@ public abstract class DateCompareLogic implements LogicRule {
 	 * 			newly specified in child class
 	 */
 	public static boolean compareTwoDates(String firstDate, String secondDate, int daysDifference) {
-		return false;
+		SimpleDate date1 = new SimpleDate(firstDate);
+		SimpleDate date2 = new SimpleDate(secondDate);
+		long diff = SimpleDate.daysToDate(date1, date2);
+		
+		if ((long) daysDifference < diff) return false;
+		else return true;
 	}
 
 	

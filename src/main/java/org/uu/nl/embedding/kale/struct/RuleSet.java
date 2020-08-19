@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.uu.nl.embedding.kale.util.StringSplitter;
+import org.uu.nl.embedding.logic.util.FormulaSet;
 
 
 /**
@@ -44,6 +46,89 @@ public class RuleSet {
 		}
 		return pRule.get(iID);
 	}
+	
+	public void loadTimeLogic(final String fnInput) throws Exception {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				new FileInputStream(fnInput), "UTF-8"));
+		this.pRule = new ArrayList<TripleRule>();
+		
+		/*
+//???	 * HOE WORDEN && || ! INGELADEN????
+		 */
+		System.out.println(	  "#####-------------------------------#####\n"
+							+ "##### HOE WORDEN && || ! INGELADEN? #####\n"
+							+ "#####-------------------------------#####\n");
+		
+		String line = "";
+		ArrayList<FormulaSet> formulaSets = new ArrayList<FormulaSet>();
+		int counter = 0;
+		while ((line = reader.readLine()) != null) {
+			formulaSets.add(counter, new FormulaSet(line));
+			String[] tokens = formulaSets.get(counter).getTokens();
+			
+			if (tokens.length != 6 && tokens.length != 9) {
+				throw new Exception("load error in RuleSet: data format incorrect");
+			}
+
+			int iFstHead = Integer.parseInt(tokens[0]);
+			int iFstTail = Integer.parseInt(tokens[2]);
+			int iFstRelation = Integer.parseInt(tokens[1]);
+//			System.out.println(iFstHead+" "+iFstTail+" "+iFstRelation);
+			if (iFstHead < 0 || iFstHead >= iNumberOfEntities) {
+				throw new Exception("load error in RuleSet: 1st head entity ID out of range");
+			}
+			if (iFstTail < 0 || iFstTail >= iNumberOfEntities) {
+				throw new Exception("load error in RuleSet: 1st tail entity ID out of range");
+			}
+			if (iFstRelation < 0 || iFstRelation >= iNumberOfRelations) {
+				throw new Exception("load error in RuleSet: 1st relation ID out of range");
+			}
+			Triple fstTriple = new Triple(iFstHead, iFstTail, iFstRelation);
+			
+			int iSndHead = Integer.parseInt(tokens[3]);
+			int iSndTail = Integer.parseInt(tokens[5]);
+			int iSndRelation = Integer.parseInt(tokens[4]);
+			if (iSndHead < 0 || iSndHead >= iNumberOfEntities) {
+				throw new Exception("load error in RuleSet: 2nd head entity ID out of range");
+			}
+			if (iSndTail < 0 || iSndTail >= iNumberOfEntities) {
+				throw new Exception("load error in RuleSet: 2nd tail entity ID out of range");
+			}
+			if (iSndRelation < 0 || iSndRelation >= iNumberOfRelations) {
+				throw new Exception("load error in RuleSet: 2nd relation ID out of range");
+			}
+			Triple sndTriple = new Triple(iSndHead, iSndTail, iSndRelation);
+			
+			if (tokens.length == 6){
+				pRule.add(new TripleRule(fstTriple, sndTriple));
+			}
+			else{
+				int iTrdHead = Integer.parseInt(tokens[7]);
+				int iTrdTail = Integer.parseInt(tokens[9]);
+				int iTrdRelation = Integer.parseInt(tokens[8]);
+//				System.out.println(iTrdHead+" "+iTrdTail+" "+iTrdRelation);
+				
+				if (iTrdHead < 0 || iTrdHead >= iNumberOfEntities) {
+					throw new Exception("load error in RuleSet: 3rd head entity ID out of range");
+				}
+				if (iTrdTail < 0 || iTrdTail >= iNumberOfEntities) {
+					throw new Exception("load error in RuleSet: 3rd tail entity ID out of range");
+				}
+				if (iTrdRelation < 0 || iTrdRelation >= iNumberOfRelations) {
+					throw new Exception("load error in RuleSet: 3rd relation ID out of range");
+				}
+				Triple trdTriple = new Triple(iTrdHead, iTrdTail, iTrdRelation);
+				
+				this.pRule.add(new TripleRule(fstTriple, sndTriple, trdTriple));
+			}
+			
+			counter++;
+		}
+		
+		this.iNumberOfRules = pRule.size();
+		reader.close();
+	}
+
 	
 	public void load(String fnInput) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(

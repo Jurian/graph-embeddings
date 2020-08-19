@@ -16,13 +16,13 @@ import org.uu.nl.embedding.kale.util.StringSplitter;
  * (https://github.com/iieir-km/KALE/tree/817474edb0da54a76b562bed2328e96284557b87)
  *
  */
-public class TripleMatrix {
+public class KaleMatrix {
 	private double[][] pData = null;
 	private double[][] pSumData = null;
 	private int iNumberOfRows;
 	private int iNumberOfColumns;
 	
-	public TripleMatrix(int iRows, int iColumns) {
+	public KaleMatrix(int iRows, int iColumns) {
 		pData = new double[iRows][];
 		pSumData = new double[iRows][];
 		for (int i = 0; i < iRows; i++) {

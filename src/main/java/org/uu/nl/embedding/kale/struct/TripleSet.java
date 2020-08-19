@@ -57,7 +57,7 @@ public class TripleSet {
 		return iNumberOfRelations;
 	}
 	
-	public int triples() {
+	public int nTriples() {
 		return iNumberOfTriples;
 	}
 	

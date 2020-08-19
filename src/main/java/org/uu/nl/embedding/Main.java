@@ -3,6 +3,7 @@ package org.uu.nl.embedding;
 import org.apache.log4j.Logger;
 import org.uu.nl.embedding.bca.BookmarkColoring;
 import org.uu.nl.embedding.convert.Rdf2GrphConverter;
+import org.uu.nl.embedding.kale.KaleRunner;
 import org.uu.nl.embedding.opt.*;
 import org.uu.nl.embedding.opt.grad.AMSGrad;
 import org.uu.nl.embedding.opt.grad.Adagrad;
@@ -67,14 +68,30 @@ public class Main {
 
         final InMemoryRdfGraph graph = converter.convert(loader.load(config.getGraphFile()));
 
-        final CoOccurrenceMatrix bca = new BookmarkColoring(graph, config);
+        //final CoOccurrenceMatrix bca = new BookmarkColoring(graph, config);
+        
+        try { 
+	        if (config.isKale()) {
+	        	KaleRunner kaleRunner = new KaleRunner(graph, config);
+	        	/*
+	        	CoOccurrenceMatrix kaleBca = kaleRunner.getKaleVectors();
+	            final IOptimizer optimizerKale = createOptimizer(config, kaleBca);
+	            final Optimum optimumKale = optimizerKale.optimize();
+	            final EmbeddingWriter writerKale = new EmbeddingTextWriter(outFileName, config);
+	            writerKale.write(optimumKale, kaleBca, Paths.get("").toAbsolutePath().resolve("out"));
+	            */
+	        }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-        final IOptimizer optimizer = createOptimizer(config, bca);
+        //final IOptimizer optimizer = createOptimizer(config, bca);
 
-        final Optimum optimum = optimizer.optimize();
+        //final Optimum optimum = optimizer.optimize();
 
-        final EmbeddingWriter writer = new EmbeddingTextWriter(outFileName, config);
-        writer.write(optimum, bca, Paths.get("").toAbsolutePath().resolve("out"));
+        //final EmbeddingWriter writer = new EmbeddingTextWriter(outFileName, config);
+        //writer.write(optimum, bca, Paths.get("").toAbsolutePath().resolve("out"));
     }
 
     private static String createFileName(Configuration config) {

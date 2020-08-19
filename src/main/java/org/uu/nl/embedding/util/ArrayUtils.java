@@ -51,11 +51,26 @@ public class ArrayUtils {
 	 * @param array
 	 * @return
 	 */
-	static public boolean[] toArray(final ArrayList<Boolean> array) {
+	static public boolean[] toArray(final ArrayList<Boolean> array, final boolean bool) {
 	    int len = array.size();
 
 	    @SuppressWarnings("unchecked")
 	    boolean[] resArray = (boolean[]) Array.newInstance(array.getClass().getComponentType(), len);
+	    System.arraycopy(array, 0, resArray, 0, len);
+
+	    return resArray;
+	}
+
+	/**
+	 * 
+	 * @param array
+	 * @return
+	 */
+	static public int[] toArray(final ArrayList<Integer> array, final int i) {
+	    int len = array.size();
+
+	    @SuppressWarnings("unchecked")
+	    int[] resArray = (int[]) Array.newInstance(array.getClass().getComponentType(), len);
 	    System.arraycopy(array, 0, resArray, 0, len);
 
 	    return resArray;
